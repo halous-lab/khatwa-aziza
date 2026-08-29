@@ -41,7 +41,8 @@
   nav.tabs button{ border:none; background:transparent; padding:10px 13px; font-family:'Cairo',sans-serif; font-weight:600; font-size:13px; color:var(--ink-soft); white-space:nowrap; border-radius:10px 10px 0 0; cursor:pointer; border-bottom:3px solid transparent; }
   nav.tabs button.active{ color:var(--rose-deep); border-bottom:3px solid var(--rose); background:var(--rose-tint); }
   main{ max-width:800px; margin:0 auto; padding:20px 16px 40px; }
-  .tabpanel{ display:none; } .tabpanel.active{ display:block; }
+  .tabpanel{ display:none; } .tabpanel.active{ display:block; animation:fadeInPanel .28s ease; }
+  @keyframes fadeInPanel{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
   h2.section-title{ font-family:'Aref Ruqaa', serif; font-size:21px; color:var(--rose-deep); margin:0 0 14px; }
   h3.sub-title{ font-size:15px; font-weight:800; color:var(--rose-deep); margin:18px 0 8px; }
   .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:14px; box-shadow:var(--shadow); }
@@ -59,9 +60,9 @@
   button.primary{ margin-top:16px; width:100%; padding:12px; background:var(--rose); color:#fff; border:none; border-radius:10px; font-family:'Cairo',sans-serif; font-weight:700; font-size:15px; cursor:pointer; }
   button.primary:hover{ background:var(--rose-deep); }
   button.secondary{ margin-top:10px; width:100%; padding:11px; background:var(--sage); color:#fff; border:none; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; font-family:'Cairo',sans-serif; }
-  button.ghost{ background:transparent; border:1px solid var(--border); color:var(--ink-soft); padding:6px 10px; border-radius:8px; font-size:12px; cursor:pointer; font-family:'Cairo',sans-serif; }
-  button.danger-ghost{ background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px 10px; border-radius:8px; font-size:12px; cursor:pointer; font-family:'Cairo',sans-serif; }
-  button.accent-ghost{ background:transparent; border:1px solid var(--gold); color:var(--gold); padding:6px 10px; border-radius:8px; font-size:12px; cursor:pointer; font-family:'Cairo',sans-serif; }
+  button.ghost{ background:transparent; border:1px solid var(--border); color:var(--ink-soft); padding:10px 14px; min-height:40px; border-radius:9px; font-size:13px; cursor:pointer; font-family:'Cairo',sans-serif; touch-action:manipulation; }
+  button.danger-ghost{ background:transparent; border:1px solid var(--danger); color:var(--danger); padding:10px 14px; min-height:40px; border-radius:9px; font-size:13px; cursor:pointer; font-family:'Cairo',sans-serif; touch-action:manipulation; }
+  button.accent-ghost{ background:transparent; border:1px solid var(--gold); color:var(--gold); padding:10px 14px; min-height:40px; border-radius:9px; font-size:13px; cursor:pointer; font-family:'Cairo',sans-serif; touch-action:manipulation; }
   .breakdown{ margin-top:16px; background:var(--sage-tint); border-radius:12px; padding:14px; }
   .breakdown .line{ display:flex; justify-content:space-between; font-size:14px; padding:4px 0; border-bottom:1px dashed rgba(122,139,105,0.3); }
   .breakdown .line:last-child{ border-bottom:none; }
@@ -86,6 +87,15 @@
   .material-row{ display:flex; gap:6px; margin-bottom:6px; align-items:center; }
   .material-row input{ flex:1; }
   .material-row .remove-row{ background:var(--danger); color:#fff; border:none; border-radius:8px; width:32px; height:36px; font-size:16px; cursor:pointer; flex-shrink:0; }
+  .product-picker{ position:relative; }
+  .product-picker input[type="text"]{ width:100%; }
+  .product-picker-results{ display:none; position:absolute; top:calc(100% + 4px); right:0; left:0; background:#fff; border:1px solid var(--border); border-radius:10px; max-height:230px; overflow-y:auto; z-index:60; box-shadow:0 8px 22px rgba(0,0,0,0.15); -webkit-overflow-scrolling:touch; }
+  .picker-item{ padding:10px 12px; border-bottom:1px solid var(--border); cursor:pointer; display:flex; flex-direction:column; gap:2px; touch-action:manipulation; }
+  .picker-item:last-child{ border-bottom:none; }
+  .picker-item:active{ background:var(--rose-tint); }
+  .picker-item b{ font-size:13px; color:var(--ink); }
+  .picker-meta{ font-size:11px; color:var(--ink-soft); }
+  .picker-empty{ padding:10px 12px; font-size:12.5px; color:var(--ink-soft); text-align:center; }
   .add-row-btn{ background:transparent; border:1px dashed var(--rose); color:var(--rose-deep); padding:8px; border-radius:8px; width:100%; font-size:13px; cursor:pointer; margin-top:4px; font-family:'Cairo',sans-serif; }
   .barcode-box{ background:#fff; border:1px solid var(--border); border-radius:10px; padding:10px; text-align:center; margin-top:10px; }
   .barcode-box svg{ max-width:100%; }
@@ -111,7 +121,7 @@
   .report-subnav{ display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
   .report-subnav button{ border:1px solid var(--border); background:#fff; padding:7px 14px; border-radius:20px; font-size:12.5px; cursor:pointer; color:var(--ink-soft); font-family:'Cairo',sans-serif; }
   .report-subnav button.active{ background:var(--rose); color:#fff; border-color:var(--rose); }
-  .report-panel{ display:none; } .report-panel.active{ display:block; }
+  .report-panel{ display:none; } .report-panel.active{ display:block; animation:fadeInPanel .22s ease; }
   .stat-row{ display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px dashed var(--border); }
   .stat-row:last-child{ border-bottom:none; }
   .overdue-item{ background:var(--danger-tint); border-radius:10px; padding:10px 12px; margin-bottom:8px; font-size:12.5px; }
@@ -449,17 +459,16 @@
         <h2 class="section-title">تسجيل طلب جديد</h2>
         <label>العميل</label>
         <select id="oCustomer"></select>
-        <label>المنتج</label>
-        <select id="oProduct"></select>
-        <div class="row2">
-          <div><label>الكمية</label><input type="number" id="oQty" min="1" step="1" value="1"></div>
-          <div><label>سعر البيع (للقطعة)</label><input type="number" id="oPrice" min="0" step="0.01" placeholder="0"></div>
-        </div>
-        <label>نسبة الخصم % (اختياري)</label>
+
+        <h3 class="sub-title">المنتجات المطلوبة</h3>
+        <div id="orderItemsContainer"></div>
+        <button type="button" class="add-row-btn" onclick="addOrderItemRow()">+ إضافة منتج للطلب</button>
+
+        <label>نسبة الخصم % (اختياري، على إجمالي الطلب)</label>
         <input type="number" id="oDiscount" min="0" max="100" step="1" value="0" oninput="if(this.value>100)this.value=100;">
         <label style="display:flex; align-items:center; gap:8px; font-weight:400; margin-top:8px;">
           <input type="checkbox" id="oFree" onchange="toggleFreeOrder()" style="width:auto;">
-          قطعة مجانية / هدية (خصم ١٠٠٪)
+          الطلب كله مجاني / هدية (خصم ١٠٠٪)
         </label>
         <div class="row2">
           <div><label>تاريخ الطلب</label><input type="date" id="oDate"></div>
@@ -970,6 +979,12 @@ document.querySelectorAll('.report-subnav').forEach(nav=>{
   });
 });
 
+document.addEventListener('click', (e)=>{
+  document.querySelectorAll('.product-picker-results').forEach(box=>{
+    if(!box.parentElement.contains(e.target)) box.style.display='none';
+  });
+});
+
 document.getElementById('oDate').valueAsDate = new Date();
 document.getElementById('purDate').valueAsDate = new Date();
 
@@ -1425,8 +1440,6 @@ async function saveCustomerEdit(id){
 function populateSelects(){
   const oc = document.getElementById('oCustomer');
   oc.innerHTML = customers.length ? customers.map(c=>`<option value="${c.id}">${c.name}${c.phone?' - '+c.phone:''}</option>`).join('') : '<option value="">أضيفي عميل الأول من تبويب العملاء</option>';
-  const op = document.getElementById('oProduct');
-  op.innerHTML = products.length ? products.map(p=>`<option value="${p.id}">${p.sku} — ${p.name} (متوفر: ${p.stock})</option>`).join('') : '<option value="">أضيفي منتج الأول</option>';
 
   const custOptions = '<option value="">— بدون اختيار —</option>' + customers.map(c=>`<option value="${c.id}">${c.name}${c.phone?' - '+c.phone:''}</option>`).join('');
   const qc = document.getElementById('quoteCustomer'); if(qc) qc.innerHTML = custOptions;
@@ -1434,13 +1447,49 @@ function populateSelects(){
 
   const ps = document.getElementById('purSupplier');
   if(ps) ps.innerHTML = suppliers.length ? suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('') : '<option value="">أضيفي مورد الأول</option>';
-
-  refreshDocItemSelects();
 }
-document.getElementById('oProduct').addEventListener('change', (e)=>{
-  const p = products.find(p=>p.id==e.target.value);
-  if(p) document.getElementById('oPrice').value = p.price;
-});
+function addOrderItemRow(){
+  const id = 'ordrow-'+Date.now()+Math.random().toString(36).slice(2,6);
+  const div = document.createElement('div');
+  div.className='material-row'; div.id=id;
+  div.innerHTML = `
+    <div class="product-picker" style="flex:2;">
+      <input type="text" class="ordi-search" placeholder="ابحثي بالاسم أو الكود..." autocomplete="off" oninput="filterOrderPicker(this)" onfocus="filterOrderPicker(this)">
+      <input type="hidden" class="ordi-product-id">
+      <div class="product-picker-results"></div>
+    </div>
+    <input type="number" class="ordi-qty" min="1" step="1" value="1" style="flex:0.5;">
+    <input type="number" class="ordi-price" min="0" step="0.01" placeholder="السعر" style="flex:0.7;">
+    <button type="button" class="remove-row" onclick="document.getElementById('${id}').remove()">×</button>`;
+  document.getElementById('orderItemsContainer').appendChild(div);
+}
+function filterOrderPicker(inputEl){
+  const term = inputEl.value.trim().toLowerCase();
+  const row = inputEl.closest('.material-row');
+  const box = row.querySelector('.product-picker-results');
+  if(!term){ box.style.display='none'; box.innerHTML=''; return; }
+  const matches = products.filter(p=> p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term)).slice(0,8);
+  box.innerHTML = matches.length ? matches.map(p=>`<div class="picker-item" onclick="selectOrderPickerProduct(this, ${p.id})"><b>${p.name}</b><span class="picker-meta">${p.sku} · ${fmt(p.price)} · متوفر: ${p.stock} قطعة</span></div>`).join('') : '<div class="picker-empty">مفيش منتج مطابق</div>';
+  box.style.display='block';
+}
+function selectOrderPickerProduct(el, productId){
+  const row = el.closest('.material-row');
+  const p = products.find(pr=>pr.id===productId);
+  if(!p) return;
+  row.querySelector('.ordi-search').value = p.name + ' — ' + p.sku;
+  row.querySelector('.ordi-product-id').value = p.id;
+  row.querySelector('.ordi-price').value = p.price;
+  row.querySelector('.product-picker-results').style.display='none';
+}
+function collectOrderItems(){
+  return Array.from(document.querySelectorAll('#orderItemsContainer .material-row')).map(row=>{
+    const pid = row.querySelector('.ordi-product-id').value;
+    const p = products.find(pr=>pr.id==pid);
+    const qty = parseInt(row.querySelector('.ordi-qty').value) || 0;
+    const price = parseFloat(row.querySelector('.ordi-price').value) || 0;
+    return p ? { product:p, qty, price } : null;
+  }).filter(it=> it && it.qty>0);
+}
 
 function toggleFreeOrder(){
   const chk = document.getElementById('oFree');
@@ -1448,9 +1497,12 @@ function toggleFreeOrder(){
 }
 async function addOrder(){
   const customerId = parseFloat(document.getElementById('oCustomer').value);
-  const productId = parseFloat(document.getElementById('oProduct').value);
-  const qty = parseInt(document.getElementById('oQty').value) || 1;
-  const price = parseFloat(document.getElementById('oPrice').value) || 0;
+  const customer = customers.find(c=>c.id===customerId);
+  if(!customer){ alert('اختاري العميل'); return; }
+
+  const items = collectOrderItems();
+  if(items.length===0){ alert('ضيفي منتج واحد على الأقل للطلب'); return; }
+
   let discountPct = parseFloat(document.getElementById('oDiscount').value) || 0;
   discountPct = Math.min(100, Math.max(0, discountPct));
   const date = document.getElementById('oDate').value;
@@ -1460,23 +1512,33 @@ async function addOrder(){
   const status = document.getElementById('oStatus').value;
   const notes = document.getElementById('oNotes').value.trim();
 
-  const customer = customers.find(c=>c.id===customerId);
-  const product = products.find(p=>p.id===productId);
-  if(!customer){ alert('اختاري العميل'); return; }
-  if(!product){ alert('اختاري منتج'); return; }
-
-  orders.push({
-    id: Date.now(), customerId, customerName: customer.name, customerPhone: customer.phone,
-    productId, sku: product.sku, productName: product.name,
-    qty, price, discountPct, cost: product.cost, date, deliveryDate, channel, payment, status, notes
+  const orderGroupId = Date.now();
+  items.forEach((it, idx)=>{
+    orders.push({
+      id: orderGroupId + idx, orderGroupId, customerId, customerName: customer.name, customerPhone: customer.phone,
+      productId: it.product.id, sku: it.product.sku, productName: it.product.name,
+      qty: it.qty, price: it.price, discountPct, cost: it.product.cost, date, deliveryDate, channel, payment, status, notes
+    });
+    it.product.stock = Math.max(0, (it.product.stock||0) - it.qty);
   });
-  product.stock = Math.max(0, (product.stock||0) - qty);
+
   await saveOrders(); await saveProducts();
-  document.getElementById('oQty').value=1; document.getElementById('oNotes').value='';
+  document.getElementById('orderItemsContainer').innerHTML=''; addOrderItemRow();
+  document.getElementById('oNotes').value='';
   document.getElementById('oDiscount').value=0; document.getElementById('oFree').checked=false;
   document.getElementById('oDate').valueAsDate = new Date();
   renderAll();
-  showToast('تم تسجيل الطلب: ' + product.name + ' — ' + customer.name);
+  const itemsSummary = items.length>1 ? (items.length+' منتجات') : items[0].product.name;
+  showToast('تم تسجيل الطلب: ' + itemsSummary + ' — ' + customer.name);
+}
+async function updateOrderGroupStatus(gid, status){
+  orders.forEach(o=>{ if(String(o.orderGroupId || ('legacy-'+o.id)) === gid) o.status = status; });
+  await saveOrders(); renderAll();
+}
+async function deleteOrderGroup(gid){
+  if(!confirm('متأكدة إنك عايزة تمسحي الطلب ده بكل منتجاته؟')) return;
+  orders = orders.filter(o=> String(o.orderGroupId || ('legacy-'+o.id)) !== gid);
+  await saveOrders(); renderAll();
 }
 async function updateOrderStatus(id, status){
   const o = orders.find(o=>o.id===id);
@@ -1693,33 +1755,42 @@ function renderPurchases(){
 }
 
 // ===== Documents (Quotes & Invoices) =====
-function refreshDocItemSelects(){
-  document.querySelectorAll('.doc-item-product').forEach(sel=>{
-    const currentVal = sel.value;
-    sel.innerHTML = '<option value="">اختاري منتج</option>' + products.map(p=>`<option value="${p.id}">${p.sku} — ${p.name}</option>`).join('');
-    if(currentVal) sel.value = currentVal;
-  });
-}
 function addDocItemRow(containerId){
   const id = 'docrow-'+Date.now()+Math.random().toString(36).slice(2,6);
-  const options = '<option value="">اختاري منتج</option>' + products.map(p=>`<option value="${p.id}">${p.sku} — ${p.name}</option>`).join('');
   const div = document.createElement('div');
   div.className='material-row'; div.id=id;
   div.innerHTML = `
-    <select class="doc-item-product" style="flex:2;" onchange="updateDocItemPrice(this)">${options}</select>
-    <input type="number" class="doc-item-qty" min="1" step="1" value="1" style="flex:0.6;">
-    <input type="number" class="doc-item-price" min="0" step="0.01" placeholder="السعر" style="flex:0.9;">
+    <div class="product-picker" style="flex:2;">
+      <input type="text" class="doc-item-search" placeholder="ابحثي بالاسم أو الكود..." autocomplete="off" oninput="filterDocPicker(this)" onfocus="filterDocPicker(this)">
+      <input type="hidden" class="doc-item-product-id">
+      <div class="product-picker-results"></div>
+    </div>
+    <input type="number" class="doc-item-qty" min="1" step="1" value="1" style="flex:0.5;">
+    <input type="number" class="doc-item-price" min="0" step="0.01" placeholder="السعر" style="flex:0.7;">
     <button type="button" class="remove-row" onclick="document.getElementById('${id}').remove()">×</button>`;
   document.getElementById(containerId).appendChild(div);
 }
-function updateDocItemPrice(selectEl){
-  const row = selectEl.closest('.material-row');
-  const p = products.find(pr=>pr.id==selectEl.value);
-  if(p) row.querySelector('.doc-item-price').value = p.price;
+function filterDocPicker(inputEl){
+  const term = inputEl.value.trim().toLowerCase();
+  const row = inputEl.closest('.material-row');
+  const box = row.querySelector('.product-picker-results');
+  if(!term){ box.style.display='none'; box.innerHTML=''; return; }
+  const matches = products.filter(p=> p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term)).slice(0,8);
+  box.innerHTML = matches.length ? matches.map(p=>`<div class="picker-item" onclick="selectDocPickerProduct(this, ${p.id})"><b>${p.name}</b><span class="picker-meta">${p.sku} · ${fmt(p.price)} · متوفر: ${p.stock} قطعة</span></div>`).join('') : '<div class="picker-empty">مفيش منتج مطابق</div>';
+  box.style.display='block';
+}
+function selectDocPickerProduct(el, productId){
+  const row = el.closest('.material-row');
+  const p = products.find(pr=>pr.id===productId);
+  if(!p) return;
+  row.querySelector('.doc-item-search').value = p.name + ' — ' + p.sku;
+  row.querySelector('.doc-item-product-id').value = p.id;
+  row.querySelector('.doc-item-price').value = p.price;
+  row.querySelector('.product-picker-results').style.display='none';
 }
 function collectDocItems(containerId){
   return Array.from(document.querySelectorAll('#'+containerId+' .material-row')).map(row=>{
-    const p = products.find(pr=>pr.id==row.querySelector('.doc-item-product').value);
+    const p = products.find(pr=>pr.id==row.querySelector('.doc-item-product-id').value);
     const qty = parseFloat(row.querySelector('.doc-item-qty').value) || 0;
     const price = parseFloat(row.querySelector('.doc-item-price').value) || 0;
     return p ? { name:p.name, sku:p.sku, qty, price, lineTotal: qty*price } : null;
@@ -2085,36 +2156,51 @@ function renderOrders(){
     container.innerHTML = '<div class="empty-state">لسه مفيش طلبات مسجّلة</div>';
     return;
   }
-  const sortedOrders = [...orders].sort((a,b)=> new Date(b.date)-new Date(a.date));
-  container.innerHTML = sortedOrders.map(o=>`
+  const groups = {};
+  orders.forEach(o=>{
+    const gid = String(o.orderGroupId || ('legacy-'+o.id));
+    if(!groups[gid]) groups[gid] = [];
+    groups[gid].push(o);
+  });
+  const groupArr = Object.entries(groups).map(([gid, items])=>({gid, items, first: items[0]}));
+  groupArr.sort((a,b)=> new Date(b.first.date) - new Date(a.first.date));
+
+  container.innerHTML = groupArr.map(g=>{
+    const o = g.first;
+    const itemsHtml = g.items.map(it=>`<div class="meta">🧶 <span class="sku-badge">${it.sku}</span> ${it.productName} × ${it.qty} = ${fmt(it.qty*it.price)}</div>`).join('');
+    const totalRevenue = g.items.reduce((s,it)=>s+orderRevenue(it),0);
+    return `
     <div class="order-item">
       <div class="top-row">
         <div>
-          <span class="sku-badge">${o.sku}</span>
           <span class="status-badge ${statusClass[o.status]}">${statusLabels[o.status]}</span>
+          ${g.items.length>1?`<span class="meta" style="margin:0 6px;">${g.items.length} منتجات</span>`:''}
         </div>
-        <button class="danger-ghost" onclick="deleteOrder(${o.id})">حذف</button>
+        <button class="danger-ghost" onclick="deleteOrderGroup('${g.gid}')">حذف</button>
       </div>
+      <div class="meta" style="font-weight:700; margin-top:6px;">العميل: ${o.customerName}${o.customerPhone?' ('+o.customerPhone+')':''}</div>
+      ${itemsHtml}
       <div class="meta">
-        ${o.productName} × ${o.qty} — العميل: ${o.customerName}${o.customerPhone?' ('+o.customerPhone+')':''}<br>
-        الإجمالي: ${fmt(orderRevenue(o))}${o.discountPct?' (بعد خصم '+o.discountPct+'%)':''} · التاريخ: ${o.date||'-'} ${o.deliveryDate?'· التسليم: '+o.deliveryDate:''}<br>
+        الإجمالي: ${fmt(totalRevenue)}${o.discountPct?' (بعد خصم '+o.discountPct+'%)':''} · التاريخ: ${o.date||'-'} ${o.deliveryDate?'· التسليم: '+o.deliveryDate:''}<br>
         ${o.channel?'وسيلة الطلب: '+o.channel+' · ':''}${o.payment?'الدفع: '+o.payment:''}
         ${o.notes?'<br>ملاحظات: '+o.notes:''}
       </div>
       <div class="item-actions">
-        <select onchange="updateOrderStatus(${o.id}, this.value)" style="width:auto; padding:4px 8px; font-size:12px;">
+        <select onchange="updateOrderGroupStatus('${g.gid}', this.value)" style="width:auto; padding:4px 8px; font-size:12px;">
           <option value="pending" ${o.status==='pending'?'selected':''}>قيد التنفيذ</option>
           <option value="paid" ${o.status==='paid'?'selected':''}>تم الدفع</option>
           <option value="delivered" ${o.status==='delivered'?'selected':''}>تم التسليم</option>
         </select>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 addMaterialRow();
 addDocItemRow('quoteItemsContainer');
 addDocItemRow('invoiceItemsContainer');
+addOrderItemRow();
 </script>
 </body>
 </html>
