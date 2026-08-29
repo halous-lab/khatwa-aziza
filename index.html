@@ -46,7 +46,8 @@
   h3.sub-title{ font-size:15px; font-weight:800; color:var(--rose-deep); margin:18px 0 8px; }
   .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:14px; box-shadow:var(--shadow); }
   .kpi-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-  .kpi{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; text-align:center; }
+  .kpi{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; text-align:center; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; touch-action:manipulation; }
+  .kpi:active{ transform:scale(0.96); box-shadow:0 2px 6px rgba(140,63,91,0.12); background:var(--rose-tint); }
   .kpi .num{ font-size:22px; font-weight:800; color:var(--rose-deep); display:block; }
   .kpi .label{ font-size:11.5px; color:var(--ink-soft); }
   label{ display:block; font-size:13px; font-weight:600; margin:10px 0 4px; color:var(--ink-soft); }
@@ -114,6 +115,18 @@
   .stat-row{ display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px dashed var(--border); }
   .stat-row:last-child{ border-bottom:none; }
   .overdue-item{ background:var(--danger-tint); border-radius:10px; padding:10px 12px; margin-bottom:8px; font-size:12.5px; }
+  #toast{
+    position:fixed; top:calc(16px + env(safe-area-inset-top,0px)); left:50%;
+    transform:translateX(-50%) translateY(-120px); opacity:0;
+    background:var(--sage); color:#fff; padding:13px 20px; border-radius:14px;
+    font-family:'Cairo',sans-serif; font-weight:700; font-size:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.18); z-index:9999;
+    display:flex; align-items:center; gap:8px; max-width:88vw;
+    transition:transform .35s ease, opacity .35s ease; pointer-events:none;
+  }
+  #toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+  #toast.error{ background:var(--danger); }
+  #toast .toast-icon{ font-size:18px; flex-shrink:0; }
   .alert-list{ display:flex; flex-direction:column; gap:8px; }
   .alert-row{ display:flex; align-items:center; gap:10px; background:var(--danger-tint); border-radius:10px; padding:10px 12px; font-size:12.5px; color:var(--danger); font-weight:700; }
   .alert-row.warn{ background:var(--gold-tint); color:#8a6d1f; }
@@ -153,6 +166,8 @@
 </style>
 </head>
 <body>
+
+<div id="toast"></div>
 
 <div id="loginScreen">
   <div class="login-card">
@@ -224,12 +239,12 @@
 
     <h2 class="section-title">لمحة سريعة</h2>
     <div class="kpi-grid">
-      <div class="kpi"><span class="num" id="kpiProducts">0</span><span class="label">عدد المنتجات</span></div>
-      <div class="kpi"><span class="num" id="kpiOrders">0</span><span class="label">عدد الطلبات</span></div>
-      <div class="kpi"><span class="num" id="kpiCustomers">0</span><span class="label">عدد العملاء</span></div>
-      <div class="kpi"><span class="num" id="kpiAvgOrder">0</span><span class="label">متوسط قيمة الطلب</span></div>
-      <div class="kpi"><span class="num" id="kpiSales">0</span><span class="label">إجمالي المبيعات</span></div>
-      <div class="kpi"><span class="num" id="kpiProfit">0</span><span class="label">صافي الربح</span></div>
+      <div class="kpi" onclick="goTo('products','prod-list')"><span class="num" id="kpiProducts">0</span><span class="label">عدد المنتجات</span></div>
+      <div class="kpi" onclick="goTo('orders','ord-list')"><span class="num" id="kpiOrders">0</span><span class="label">عدد الطلبات</span></div>
+      <div class="kpi" onclick="goTo('customers','cust-list')"><span class="num" id="kpiCustomers">0</span><span class="label">عدد العملاء</span></div>
+      <div class="kpi" onclick="goTo('reports','rep-orders')"><span class="num" id="kpiAvgOrder">0</span><span class="label">متوسط قيمة الطلب</span></div>
+      <div class="kpi" onclick="goTo('reports','rep-orders')"><span class="num" id="kpiSales">0</span><span class="label">إجمالي المبيعات</span></div>
+      <div class="kpi" onclick="goTo('reports','rep-products')"><span class="num" id="kpiProfit">0</span><span class="label">صافي الربح</span></div>
     </div>
 
     <div class="card">
@@ -975,6 +990,14 @@ document.getElementById('currencySelect').addEventListener('change', async (e)=>
 });
 
 function fmt(n){ return (Math.round((n||0)*100)/100).toLocaleString('ar-EG') + ' ' + currency; }
+let toastTimer = null;
+function showToast(message, type){
+  const toast = document.getElementById('toast');
+  toast.innerHTML = `<span class="toast-icon">${type==='error'?'⚠️':'✅'}</span><span>${message}</span>`;
+  toast.className = type==='error' ? 'show error' : 'show';
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, 2500);
+}
 function orderRevenue(o){ return o.qty*o.price*(1-((o.discountPct||0)/100)); }
 function readFilesAsDataURLs(fileList){
   return Promise.all(Array.from(fileList).map(f=> new Promise((res,rej)=>{
@@ -1228,6 +1251,7 @@ async function saveCalculatedProduct(){
   document.getElementById('cPhotos').value='';
   document.getElementById('materialsContainer').innerHTML=''; addMaterialRow();
   goTo('products','prod-list');
+  showToast('تم حفظ المنتج: ' + lastCalc.name + ' (' + sku + ')');
 }
 
 // ===== Products =====
@@ -1263,6 +1287,7 @@ async function saveProductEdit(id){
   p.size = document.getElementById('editSize-'+id).value.trim();
   p.description = document.getElementById('editDesc-'+id).value.trim();
   await saveProducts(); renderAll();
+  showToast('تم حفظ تعديلات المنتج: ' + p.name);
 }
 async function addProductPhotos(id, inputEl){
   const files = inputEl.files;
@@ -1372,6 +1397,7 @@ async function addCustomer(){
   document.getElementById('cuName').value=''; document.getElementById('cuPhone').value='';
   document.getElementById('cuAddress').value=''; document.getElementById('cuNotes').value='';
   renderAll();
+  showToast('تمت إضافة العميل: ' + name);
 }
 async function deleteCustomer(id){
   if(!confirm('متأكدة إنك عايزة تمسحي العميل ده؟')) return;
@@ -1392,6 +1418,7 @@ async function saveCustomerEdit(id){
   c.address = document.getElementById('editCuAddress-'+id).value.trim();
   c.notes = document.getElementById('editCuNotes-'+id).value.trim();
   await saveCustomers(); renderAll();
+  showToast('تم حفظ تعديلات العميل: ' + c.name);
 }
 
 // ===== Orders =====
@@ -1449,6 +1476,7 @@ async function addOrder(){
   document.getElementById('oDiscount').value=0; document.getElementById('oFree').checked=false;
   document.getElementById('oDate').valueAsDate = new Date();
   renderAll();
+  showToast('تم تسجيل الطلب: ' + product.name + ' — ' + customer.name);
 }
 async function updateOrderStatus(id, status){
   const o = orders.find(o=>o.id===id);
@@ -1575,6 +1603,7 @@ async function addSupplier(){
   document.getElementById('supAddress').value=''; document.getElementById('supMaterials').value='';
   document.getElementById('supNotes').value='';
   renderAll();
+  showToast('تمت إضافة المورد: ' + name);
 }
 async function deleteSupplier(id){
   if(!confirm('متأكدة إنك عايزة تمسحي المورد ده؟')) return;
@@ -1594,6 +1623,7 @@ async function saveSupplierEdit(id){
   s.materials = document.getElementById('editSupMaterials-'+id).value.trim();
   s.notes = document.getElementById('editSupNotes-'+id).value.trim();
   await saveSuppliers(); renderAll();
+  showToast('تم حفظ تعديلات المورد: ' + s.name);
 }
 function renderSuppliers(){
   const container = document.getElementById('suppliersList');
@@ -1639,6 +1669,7 @@ async function addPurchase(){
   document.getElementById('purUnit').value=''; document.getElementById('purCost').value='';
   document.getElementById('purNotes').value='';
   renderAll();
+  showToast('تم تسجيل عملية الشراء: ' + material);
 }
 async function deletePurchase(id){
   if(!confirm('متأكدة إنك عايزة تمسحي عملية الشراء دي؟')) return;
@@ -1729,6 +1760,7 @@ async function generateDocument(type){
   await saveDocuments();
   renderDocumentsHistory();
   openPrintableDocument(record);
+  showToast('تم إصدار ' + (type==='quote'?'عرض السعر':'الفاتورة') + ' رقم ' + docNumber);
 }
 function openPrintableDocument(record){
   const title = record.type==='quote' ? 'عرض سعر' : 'فاتورة';
